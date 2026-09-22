@@ -1,0 +1,9 @@
+[package]
+name = "rust-latency-gateway"
+version = "0.1.0"
+edition = "2021"
+description = "Dependency-free latency-aware gateway scaffold with Axum-style route handlers"
+license = "MIT"
+
+[dependencies]
+# Intentionally empty: the scaffold uses only Rust's standard library.
