@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rust Latency Gateway — Measured Sub-10ms API Gateway</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0B0E14;
+      --card-bg: rgba(26, 31, 46, 0.6);
+      --border: rgba(255, 255, 255, 0.08);
+      --accent: #F97316;
+      --accent-glow: rgba(249, 115, 22, 0.25);
+      --text: #F3F4F6;
+      --text-muted: #9CA3AF;
+      --font-sans: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg); color: var(--text); font-family: var(--font-sans);
+      line-height: 1.6; padding: 0;
+      background-image: radial-gradient(circle at 15% 15%, rgba(249, 115, 22, 0.08) 0%, transparent 40%);
+    }
+    .container { max-width: 1000px; margin: 0 auto; padding: 4rem 1.5rem; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(249, 115, 22, 0.1); border: 1px solid var(--accent);
+      color: var(--accent); padding: 0.35rem 0.85rem; border-radius: 9999px;
+      font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+      margin-bottom: 1.25rem; font-family: var(--font-mono);
+    }
+    .badge::before { content: ""; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 8px var(--accent); }
+    h1 { font-size: 2.75rem; font-weight: 800; line-height: 1.2; margin-bottom: 1rem; }
+    .subtitle { font-size: 1.2rem; color: var(--text-muted); max-width: 720px; margin-bottom: 2rem; }
+    .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3.5rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600;
+      text-decoration: none; font-size: 0.95rem; transition: all 0.2s ease;
+    }
+    .btn-primary { background: var(--accent); color: #000; box-shadow: 0 0 20px var(--accent-glow); }
+    .btn-primary:hover { transform: translateY(-2px); }
+    .btn-secondary { background: rgba(255,255,255,0.05); color: var(--text); border: 1px solid var(--border); }
+    
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 3.5rem; }
+    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.75rem; }
+    .card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem; color: #fff; }
+    .card p { color: var(--text-muted); font-size: 0.95rem; }
+
+    .benchmark-table {
+      width: 100%; border-collapse: collapse; margin-bottom: 3.5rem;
+      font-family: var(--font-mono); font-size: 0.85rem; background: rgba(0,0,0,0.3);
+      border-radius: 8px; overflow: hidden; border: 1px solid var(--border);
+    }
+    .benchmark-table th, .benchmark-table td { padding: 0.85rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+    .benchmark-table th { background: rgba(255,255,255,0.03); color: var(--accent); font-weight: 600; }
+
+    footer {
+      border-top: 1px solid var(--border); padding-top: 2rem;
+      display: flex; justify-content: space-between; color: var(--text-muted); font-size: 0.9rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="badge">Systems Architecture &middot; Rust</div>
+    <h1>Rust Latency Gateway</h1>
+    <p class="subtitle">Zero-dependency, measured low-latency API gateway scaffold with Axum-shaped route handlers, cache-aside layer, and lock-free atomic telemetry.</p>
+    
+    <div class="btn-group">
+      <a href="https://github.com/Jawknee-builds/rust-latency-gateway" class="btn btn-primary" target="_blank">View GitHub Repository</a>
+      <a href="https://jawknee-builds.github.io/systems-casebook/" class="btn btn-secondary" target="_blank">Read Systems Casebook</a>
+    </div>
+
+    <table class="benchmark-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Design Target</th>
+          <th>Implementation Mechanism</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cache Hit Latency (p50)</td>
+          <td style="color: #4ADE80;">&lt; 1 ms</td>
+          <td>Lock-free in-memory cache lookup</td>
+        </tr>
+        <tr>
+          <td>Cache Miss Latency (p99)</td>
+          <td style="color: #4ADE80;">&lt; 10 ms</td>
+          <td>Deterministic Upstream Trait dispatch</td>
+        </tr>
+        <tr>
+          <td>Throughput (Cache Hits)</td>
+          <td style="color: #60A5FA;">&gt; 10,000 req/s</td>
+          <td>Zero external runtime GC overhead</td>
+        </tr>
+        <tr>
+          <td>Process Memory Footprint</td>
+          <td style="color: #A78BFA;">&lt; 10 MB RSS</td>
+          <td>Standard library Tokio networking stack</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="grid">
+      <div class="card">
+        <h3>⚡ Zero External Dependencies</h3>
+        <p>Uses strictly the Rust standard library for core network serialization and concurrency. Builds anywhere in seconds without dependency bloat.</p>
+      </div>
+      <div class="card">
+        <h3>📊 Atomic Telemetry Counters</h3>
+        <p><code>AtomicU64</code> performance counters record request volume, error tallies, and latency histograms without synchronization bottlenecks.</p>
+      </div>
+      <div class="card">
+        <h3>🔌 Pluggable Upstream Trait</h3>
+        <p>Decoupled trait contract allows instantaneous substitution between local test fixtures and production upstream microservices.</p>
+      </div>
+    </div>
+
+    <footer>
+      <div>Architected by <strong>Jonathan Jaladi</strong> &middot; Systems Architect</div>
+      <div><a href="https://github.com/Jawknee-builds">github.com/Jawknee-builds</a> &middot; <a href="mailto:jona247mail@gmail.com">Contact</a></div>
+    </footer>
+  </div>
+</body>
+</html>

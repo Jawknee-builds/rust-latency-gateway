@@ -1,5 +1,6 @@
 # rust-latency-gateway
 
+[![Live on Vercel](https://img.shields.io/badge/Live_Demo-rust--latency--gateway.vercel.app-F97316?style=flat-square&logo=vercel)](https://rust-latency-gateway.vercel.app)
 [![CI](https://github.com/Jawknee-builds/rust-latency-gateway/actions/workflows/ci.yml/badge.svg)](https://github.com/Jawknee-builds/rust-latency-gateway/actions/workflows/ci.yml)
 [![Rust](https://img.shields.io/badge/rust-stable-orange?style=flat-square)](https://www.rust-lang.org/)
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Jawknee-builds/rust-latency-gateway)
