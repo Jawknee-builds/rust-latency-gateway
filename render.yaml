@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: rust-latency-gateway
+    runtime: rust
+    region: oregon
+    plan: free
+    buildCommand: cargo build --release
+    startCommand: ./target/release/rust-latency-gateway
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: RUST_LOG
+        value: info
+    healthCheckPath: /health
